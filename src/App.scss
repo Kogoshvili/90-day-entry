@@ -1,0 +1,61 @@
+@import './styles/mixins';
+
+.App {
+    margin: 50 auto;
+
+    &-title {
+        text-align: center;
+        font-size: 18px;
+    }
+
+    &-intervals {
+        @include flex-ccc;
+        margin: 30px 10px;
+        flex-direction: column;
+
+        &-interval {
+            margin: 5px;
+        }
+
+        &-buttons {
+            @include flex-ccc;
+            margin-top: 10px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+    }
+
+    &-result {
+        @include flex-ccc;
+        flex-direction: column;
+        flex-wrap: wrap;
+
+        &-days {
+            border-radius: 5px;
+            padding: 10px;
+
+            &.safe {
+                background-color: greenyellow;
+            }
+
+            &.warning {
+                background-color: orange;
+            }
+
+            &.danger {
+                background-color: red;
+            }
+        }
+
+        &-breakdown {
+            margin-top: 50px;
+        }
+    }
+
+    &-disclaimer {
+        @include flex-ccc;
+        margin: 50px;
+        flex-direction: column;
+        flex-wrap: wrap;
+    }
+}
