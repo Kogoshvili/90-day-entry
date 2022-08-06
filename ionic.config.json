@@ -1,0 +1,8 @@
+{
+  "name": "90-day-entry",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react",
+  "id": "9af79890"
+}

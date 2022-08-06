@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "90-day-entry",
+	"webDir": "build",
+	"bundledWebRuntime": false
+}
