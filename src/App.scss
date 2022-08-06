@@ -1,11 +1,19 @@
 @import './styles/mixins';
 
 .App {
+    // &.en {
+    //     font-size: 1rem;
+    // }
+
+    // &.ka {
+    //     font-size: 0.8rem;
+    // }
+
     margin: 50 auto;
 
     &-title {
         text-align: center;
-        font-size: 18px;
+        font-size:  1rem;
     }
 
     &-intervals {
@@ -27,6 +35,7 @@
 
     &-result {
         @include flex-ccc;
+        font-size: 1rem;
         flex-direction: column;
         flex-wrap: wrap;
 
@@ -54,6 +63,7 @@
 
     &-disclaimer {
         @include flex-ccc;
+        font-size: 1rem;
         margin: 50px;
         flex-direction: column;
         flex-wrap: wrap;

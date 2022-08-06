@@ -3,7 +3,7 @@ import DateSelector from '../DateSelector/DateSelector';
 import 'react-datepicker/dist/react-datepicker.css';
 import './IntervalSelector.scss';
 import { IonBadge, IonCol, IonGrid, IonRow } from '@ionic/react';
-import { intervalInDays } from '../../util';
+import { intervalInDays } from '../../utils/util';
 import Interval from '../../models/Interval';
 
 interface IntervalSelectorProps {
@@ -31,13 +31,13 @@ function IntervalSelector({ onChange, className = '' }: IntervalSelectorProps) {
         <IonGrid className={`IntervalSelector ${className}`}>
             <IonRow>
                 <IonCol className="IntervalSelector-start">
-                    <DateSelector onChange={setStartDate} label="Enter Date"/>
+                    <DateSelector onChange={setStartDate} label={ __('enter date') }/>
                 </IonCol>
                 <IonCol size='2' className="IntervalSelector-badge-wrapper">
                     <IonBadge className="IntervalSelector-badge">{ days ?? '-'}</IonBadge>
                 </IonCol>
                 <IonCol className="IntervalSelector-end">
-                    <DateSelector onChange={setEndDate} label="Exit Date"/>
+                    <DateSelector onChange={setEndDate} label={ __('exit date') }/>
                 </IonCol>
             </IonRow>
         </IonGrid>

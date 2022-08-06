@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { IonDatetime, IonInput, IonItem, IonLabel, IonModal } from '@ionic/react';
 import './DateSelector.scss';
-import { dateToString } from '../../util';
+import { dateToString } from '../../utils/util';
 
 interface DateSelectorProps {
     onChange: (date: Date) => void
@@ -25,11 +25,13 @@ const DateSelector = ({ onChange, label = '' }: DateSelectorProps) => {
     }
 
     return (
-        <IonItem className="DateSelector" onClick={() => setIsOpen(true)}>
+        <IonItem className="DateSelector">
             <IonLabel position="stacked">{label}</IonLabel>
             <IonInput
                 value={dateToString(date)}
-                placeholder="Select date"
+                placeholder={__('select date')}
+                onClick={() => setIsOpen(true)}
+                onFocus={() => setIsOpen(true)}
             ></IonInput>
             <IonModal
                 className="DateSelector-modal"

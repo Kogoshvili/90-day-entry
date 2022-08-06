@@ -1,17 +1,21 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
+    IonActionSheet,
     IonApp,
     IonButton,
     IonContent,
+    IonFab,
+    IonFabButton,
     IonHeader,
-    IonPage,
     IonTitle,
     IonToolbar,
     setupIonicReact
 } from '@ionic/react';
 import IntervalSelector from './components/IntervalSelector/IntervalSelector';
-import { intervalInDays, dateToString } from './util';
+import { intervalInDays, dateToString } from './utils/util';
 import Interval from './models/Interval';
+import { Nullable } from './models/Nil';
+import { OverlayEventDetail } from '@ionic/core';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -30,9 +34,8 @@ import '@ionic/react/css/text-alignment.css';
 import '@ionic/react/css/text-transformation.css';
 
 /* Theme variables */
-import './theme/variables.css';
+import './theme/variables.scss';
 import './App.scss';
-import { Nullable } from './models/Nil';
 
 setupIonicReact();
 
@@ -44,6 +47,17 @@ const App: React.FC = () => {
     const [intervals, setIntervals] = useState<Interval[]>([]);
     const [numberOfStays, setNumberOfStays] = useState([...Array(1).keys()]);
     const [streaks, setStreaks] = useState<Streak[]>([]);
+    const [showActionSheet, setShowActionSheet] = useState(false);
+    const [localization, setLocalization] = useState('en');
+
+    useEffect(() => {
+        const lang = localStorage.getItem('lang');
+        if (lang) {
+            setLocalization(lang);
+        } else {
+            localStorage.setItem('lang', 'en');
+        }
+    }, []);
 
     function onIntervalSelect(index: number, interval: Interval) {
         const newIntervals = intervals;
@@ -100,62 +114,88 @@ const App: React.FC = () => {
         return 'danger';
     }
 
+    function onLangSelect(e: CustomEvent<OverlayEventDetail<any>>) {
+        const lang = e.detail.data;
+        localStorage.setItem('lang', lang);
+        setLocalization(lang);
+        setShowActionSheet(false);
+    }
+
     return (
-        <IonApp>
-            <IonPage>
-                <IonHeader>
-                    <IonToolbar>
-                        <IonTitle className="App-title">Enter previous stay(s) in the Schengen area</IonTitle>
-                    </IonToolbar>
-                </IonHeader>
-                <IonContent>
-                    <div className="App-intervals">
+        <IonApp className={`App ${localization}`}>
+            <IonHeader>
+                <IonToolbar>
+                    <IonTitle className="App-title">{ __('enter previous stay(s) in the schengen area') }</IonTitle>
+                </IonToolbar>
+            </IonHeader>
+            <IonContent>
+                <div className="App-intervals">
+                    {
+                        numberOfStays.map(i =>
+                            <IntervalSelector
+                                key={i}
+                                className="App-intervals-interval"
+                                onChange={interval => onIntervalSelect(i, interval)}
+                            />
+                        )
+                    }
+                    <div className="App-intervals-buttons">
+                        <IonButton
+                            size="small"
+                            color="secondary"
+                            onClick={() => setNumberOfStays([...Array(numberOfStays.length + 1).keys()])}
+                        >+</IonButton>
+                        <IonButton
+                            size="small"
+                            color="danger"
+                            onClick={() => setNumberOfStays([...Array(numberOfStays.length - 1).keys()])}
+                            disabled={numberOfStays.length === 1}
+                        >-</IonButton>
+                    </div>
+                </div>
+                <div className="App-result">
+                    <div className={`App-result-days ${daysInfoClass()}`}>
+                        {__('days left')}: { daysLeft() }
+                    </div>
+                    <div className="App-result-breakdown">
                         {
-                            numberOfStays.map(i =>
-                                <IntervalSelector
-                                    key={i}
-                                    className="App-intervals-interval"
-                                    onChange={interval => onIntervalSelect(i, interval)}
-                                />
+                            streaks.map((streak, i) =>
+                                <div key={i}>
+                                    {__('streak')} #{i + 1} {dateToString(streak.start)} - {dateToString(streak.end)}: {streak.length} {__('days')}
+                                </div>
                             )
                         }
-                        <div className="App-intervals-buttons">
-                            <IonButton
-                                size="small"
-                                color="secondary"
-                                onClick={() => setNumberOfStays([...Array(numberOfStays.length + 1).keys()])}
-                            >+</IonButton>
-                            <IonButton
-                                size="small"
-                                color="danger"
-                                onClick={() => setNumberOfStays([...Array(numberOfStays.length - 1).keys()])}
-                                disabled={numberOfStays.length === 1}
-                            >-</IonButton>
-                        </div>
                     </div>
-                    <div className="App-result">
-                        <div className={`App-result-days ${daysInfoClass()}`}>
-                            Days left: { daysLeft() }
-                        </div>
-                        <div className="App-result-breakdown">
-                            {
-                                streaks.map((streak, i) =>
-                                    <div key={i}>
-                                        Streak #{i + 1} {dateToString(streak.start)} - {dateToString(streak.end)}: {streak.length} Days
-                                    </div>
-                                )
-                            }
-                        </div>
-                    </div>
-                    <div className="App-disclaimer">
-                        *The calculator is a helping tool only;<br/>
-                        it does not constitute a right to stay for<br/>
-                        a period resulting from its calculation.
-                    </div>
-                </IonContent>
-            </IonPage>
+                </div>
+                <div className="App-disclaimer" dangerouslySetInnerHTML={{ __html: __('_disclaimer') }}></div>
+            </IonContent>
+            <IonFab vertical="bottom" horizontal="end" slot="fixed">
+                <IonFabButton onClick={() => setShowActionSheet(true)}>
+                    { languages.find(l => l.data === localization)?.flag }
+                </IonFabButton>
+            </IonFab>
+            <IonActionSheet
+                isOpen={showActionSheet}
+                onDidDismiss={onLangSelect}
+                buttons={[
+                    ...languages, {
+                        text: __('cancel'),
+                        role: 'cancel'
+                    }]}
+            >
+            </IonActionSheet>
         </IonApp>
     );
 };
+
+const languages = [{
+    flag: '🇺🇸',
+    text: '🇺🇸 English',
+    data: 'en'
+}, {
+    flag: '🇬🇪',
+    text: '🇬🇪 ქართული',
+    data: 'ka'
+}];
 
 export default App;

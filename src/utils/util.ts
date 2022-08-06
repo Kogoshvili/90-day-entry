@@ -1,4 +1,4 @@
-import { Nilable } from './models/Nil';
+import { Nilable } from '../models/Nil';
 
 export function isDate(input: any | any[]): boolean{
     if (input instanceof Array) {
