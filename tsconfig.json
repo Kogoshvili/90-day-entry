@@ -22,7 +22,7 @@
     "typeRoots": [
       "./models",
       "./node_modules/@types"
-    ]
+    ],
   },
   "include": [
     "src"
