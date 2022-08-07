@@ -16,7 +16,7 @@ export function isDate(input: any | any[]): boolean{
 }
 
 export function intervalInDays(final: Nilable<Date>, start: Nilable<Date>) {
-    if (!final || !start) return 0;
+    if (!final || !start) return null;
     const timeDifference = final.getTime() - start.getTime();
     return Math.ceil(timeDifference / (1000 * 3600 * 24));
 }

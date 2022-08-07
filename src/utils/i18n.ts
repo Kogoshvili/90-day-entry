@@ -8,7 +8,8 @@ const localization: { [key: string]: { [key: string]: string } } = {
         'select date': 'Select date',
         'enter date': 'Enter Date',
         'exit date': 'Exit Date',
-        'cancel': 'Cancel'
+        'cancel': 'Cancel',
+        'confirm': 'Confirm'
     },
     ka: {
         'enter previous stay(s) in the schengen area': 'შეიყვანეთ წინა ყოფნა(ები) შენგენის ზონაში',
@@ -19,7 +20,8 @@ const localization: { [key: string]: { [key: string]: string } } = {
         'select date': 'აირჩიე თარიღი',
         'enter date': 'შესვლის თარიღი',
         'exit date': 'გასვლის თარიღი',
-        'cancel': 'გაუქმება'
+        'cancel': 'გაუქმება',
+        'confirm': 'დადასტურება'
     }
 };
 

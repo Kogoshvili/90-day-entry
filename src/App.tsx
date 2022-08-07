@@ -69,6 +69,11 @@ const App: React.FC = () => {
     }
 
     function calculate() {
+        if (!intervals[0].start || !intervals[0].end) {
+            setStreaks([]);
+            return;
+        }
+
         const days: Streak[] = [
             {
                 start: intervals[0].start,
@@ -78,9 +83,10 @@ const App: React.FC = () => {
         ];
 
         for (const interval of intervals) {
+            if (!interval.start || !interval.end) continue;
             const streakLength = intervalInDays(interval.end, days.at(-1)?.start);
 
-            if (streakLength >= 180) {
+            if (streakLength && streakLength >= 180) {
                 days.push({
                     start: interval.start,
                     end: interval.start,
@@ -91,7 +97,7 @@ const App: React.FC = () => {
             days[days.length - 1] = {
                 start: days.at(-1)?.start,
                 end: interval.end,
-                length: Number(days.at(-1)?.length) + intervalInDays(interval.end, interval.start)
+                length: Number(days.at(-1)?.length) + Number(intervalInDays(interval.end, interval.start))
             };
         }
 
@@ -100,7 +106,7 @@ const App: React.FC = () => {
 
     function daysLeft(): Nullable<number> {
         const days = 90 - Number(streaks.at(-1)?.length);
-        return Number.isNaN(days) ? null : days;
+        return Number.isNaN(days) ? 90 : days;
     }
 
     function daysInfoClass(): string {
@@ -121,6 +127,15 @@ const App: React.FC = () => {
         localStorage.setItem('lang', lang);
         setLocalization(lang);
         setShowActionSheet(false);
+    }
+
+    function onIncreaseClick() {
+        setNumberOfStays([...Array(numberOfStays.length + 1).keys()]);
+    }
+
+    function onDecreaseClick() {
+        setNumberOfStays([...Array(numberOfStays.length - 1).keys()]);
+        setIntervals(intervals.slice(0, -(numberOfStays.length - 1)));
     }
 
     return (
@@ -146,12 +161,12 @@ const App: React.FC = () => {
                             <IonButton
                                 size="small"
                                 color="secondary"
-                                onClick={() => setNumberOfStays([...Array(numberOfStays.length + 1).keys()])}
+                                onClick={onIncreaseClick}
                             >+</IonButton>
                             <IonButton
                                 size="small"
                                 color="danger"
-                                onClick={() => setNumberOfStays([...Array(numberOfStays.length - 1).keys()])}
+                                onClick={onDecreaseClick}
                                 disabled={numberOfStays.length === 1}
                             >-</IonButton>
                         </div>
