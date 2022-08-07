@@ -22,6 +22,7 @@
     "@types/react-router-dom": "^5.1.7",
     "@types/uuid": "^8.3.4",
     "date-fns": "^2.29.1",
+    "intl-ka": "^1.0.1",
     "ionicons": "^5.4.0",
     "react": "^17.0.1",
     "react-datepicker": "^4.8.0",
