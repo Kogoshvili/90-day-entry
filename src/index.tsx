@@ -4,7 +4,6 @@ import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 import localization from './utils/i18n';
-import './utils/function';
 import 'intl-ka';
 
 window.__ = (value: string): string => {
