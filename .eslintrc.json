@@ -38,7 +38,8 @@
             "caughtErrorsIgnorePattern": "^_",
             "varsIgnorePattern": "^_",
             "ignoreRestSiblings": true
-        }]
+        }],
+        "@typescript-eslint/ban-ts-comment": "off"
     },
     "globals": {
         "__": "readonly"

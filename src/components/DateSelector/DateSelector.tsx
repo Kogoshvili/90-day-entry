@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { IonDatetime, IonInput, IonItem, IonLabel, IonModal } from '@ionic/react';
 import './DateSelector.scss';
 import { dateToString } from '../../utils/util';
+import { LocalizationContext } from '../../App';
 
 interface DateSelectorProps {
     onChange: (date: Date) => void
@@ -11,6 +12,7 @@ interface DateSelectorProps {
 const DateSelector = ({ onChange, label = '' }: DateSelectorProps) => {
     const [date, setDate] = useState<Date | null>(null);
     const [isOpen, setIsOpen] = useState(false);
+    const localization = useContext(LocalizationContext);
 
     function onDateClick(e: any) {
         const date = new Date(e.target.value);
@@ -25,7 +27,7 @@ const DateSelector = ({ onChange, label = '' }: DateSelectorProps) => {
     }
 
     return (
-        <IonItem className="DateSelector">
+        <IonItem className={`DateSelector ${localization}`}>
             <IonLabel position="stacked">{label}</IonLabel>
             <IonInput
                 value={dateToString(date)}
@@ -39,6 +41,7 @@ const DateSelector = ({ onChange, label = '' }: DateSelectorProps) => {
                 trigger="open-modal"
             >
                 <IonDatetime
+                    locale={localization}
                     presentation="date"
                     firstDayOfWeek={1}
                     max={maxDate()}

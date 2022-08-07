@@ -1,19 +1,14 @@
 @import './styles/mixins';
 
 .App {
-    // &.en {
-    //     font-size: 1rem;
-    // }
-
-    // &.ka {
-    //     font-size: 0.8rem;
-    // }
-
     margin: 50 auto;
 
     &-title {
         text-align: center;
-        font-size:  1rem;
+
+        &.ka {
+            font-size: 0.9em;
+        }
     }
 
     &-intervals {
@@ -35,13 +30,16 @@
 
     &-result {
         @include flex-ccc;
-        font-size: 1rem;
         flex-direction: column;
         flex-wrap: wrap;
 
         &-days {
             border-radius: 5px;
             padding: 10px;
+
+            &.ka {
+                font-size: 0.9em;
+            }
 
             &.safe {
                 background-color: greenyellow;
@@ -58,14 +56,22 @@
 
         &-breakdown {
             margin-top: 50px;
+
+            &.ka {
+                font-size: 0.9em;
+            }
         }
     }
 
     &-disclaimer {
         @include flex-ccc;
-        font-size: 1rem;
         margin: 50px;
         flex-direction: column;
         flex-wrap: wrap;
+        font-size: 0.9em;
+
+        &.ka {
+            font-size: 0.8em;
+        }
     }
 }

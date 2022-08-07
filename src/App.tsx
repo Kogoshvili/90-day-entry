@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import {
     IonActionSheet,
     IonApp,
@@ -42,6 +42,8 @@ setupIonicReact();
 interface Streak extends Interval {
     length: number;
 }
+
+export const LocalizationContext = createContext('en');
 
 const App: React.FC = () => {
     const [intervals, setIntervals] = useState<Interval[]>([]);
@@ -122,69 +124,71 @@ const App: React.FC = () => {
     }
 
     return (
-        <IonApp className={`App ${localization}`}>
-            <IonHeader>
-                <IonToolbar>
-                    <IonTitle className="App-title">{ __('enter previous stay(s) in the schengen area') }</IonTitle>
-                </IonToolbar>
-            </IonHeader>
-            <IonContent>
-                <div className="App-intervals">
-                    {
-                        numberOfStays.map(i =>
-                            <IntervalSelector
-                                key={i}
-                                className="App-intervals-interval"
-                                onChange={interval => onIntervalSelect(i, interval)}
-                            />
-                        )
-                    }
-                    <div className="App-intervals-buttons">
-                        <IonButton
-                            size="small"
-                            color="secondary"
-                            onClick={() => setNumberOfStays([...Array(numberOfStays.length + 1).keys()])}
-                        >+</IonButton>
-                        <IonButton
-                            size="small"
-                            color="danger"
-                            onClick={() => setNumberOfStays([...Array(numberOfStays.length - 1).keys()])}
-                            disabled={numberOfStays.length === 1}
-                        >-</IonButton>
-                    </div>
-                </div>
-                <div className="App-result">
-                    <div className={`App-result-days ${daysInfoClass()}`}>
-                        {__('days left')}: { daysLeft() }
-                    </div>
-                    <div className="App-result-breakdown">
+        <LocalizationContext.Provider value={localization}>
+            <IonApp className={`App ${localization}`}>
+                <IonHeader>
+                    <IonToolbar>
+                        <IonTitle className={`App-title ${localization}`}>{ __('enter previous stay(s) in the schengen area') }</IonTitle>
+                    </IonToolbar>
+                </IonHeader>
+                <IonContent>
+                    <div className="App-intervals">
                         {
-                            streaks.map((streak, i) =>
-                                <div key={i}>
-                                    {__('streak')} #{i + 1} {dateToString(streak.start)} - {dateToString(streak.end)}: {streak.length} {__('days')}
-                                </div>
+                            numberOfStays.map(i =>
+                                <IntervalSelector
+                                    key={i}
+                                    className="App-intervals-interval"
+                                    onChange={interval => onIntervalSelect(i, interval)}
+                                />
                             )
                         }
+                        <div className="App-intervals-buttons">
+                            <IonButton
+                                size="small"
+                                color="secondary"
+                                onClick={() => setNumberOfStays([...Array(numberOfStays.length + 1).keys()])}
+                            >+</IonButton>
+                            <IonButton
+                                size="small"
+                                color="danger"
+                                onClick={() => setNumberOfStays([...Array(numberOfStays.length - 1).keys()])}
+                                disabled={numberOfStays.length === 1}
+                            >-</IonButton>
+                        </div>
                     </div>
-                </div>
-                <div className="App-disclaimer" dangerouslySetInnerHTML={{ __html: __('_disclaimer') }}></div>
-            </IonContent>
-            <IonFab vertical="bottom" horizontal="end" slot="fixed">
-                <IonFabButton onClick={() => setShowActionSheet(true)}>
-                    { languages.find(l => l.data === localization)?.flag }
-                </IonFabButton>
-            </IonFab>
-            <IonActionSheet
-                isOpen={showActionSheet}
-                onDidDismiss={onLangSelect}
-                buttons={[
-                    ...languages, {
-                        text: __('cancel'),
-                        role: 'cancel'
-                    }]}
-            >
-            </IonActionSheet>
-        </IonApp>
+                    <div className="App-result">
+                        <div className={`App-result-days ${localization} ${daysInfoClass()}`}>
+                            {__('days left')}: { daysLeft() }
+                        </div>
+                        <div className={`App-result-breakdown ${localization}`}>
+                            {
+                                streaks.map((streak, i) =>
+                                    <div key={i}>
+                                        {__('streak')} #{i + 1} {dateToString(streak.start)} - {dateToString(streak.end)}: {streak.length} {__('days')}
+                                    </div>
+                                )
+                            }
+                        </div>
+                    </div>
+                    <div className={`App-disclaimer ${localization}`} dangerouslySetInnerHTML={{ __html: __('_disclaimer') }}></div>
+                </IonContent>
+                <IonFab vertical="bottom" horizontal="end" slot="fixed">
+                    <IonFabButton onClick={() => setShowActionSheet(true)}>
+                        { languages.find(l => l.data === localization)?.flag }
+                    </IonFabButton>
+                </IonFab>
+                <IonActionSheet
+                    isOpen={showActionSheet}
+                    onDidDismiss={onLangSelect}
+                    buttons={[
+                        ...languages, {
+                            text: __('cancel'),
+                            role: 'cancel'
+                        }]}
+                >
+                </IonActionSheet>
+            </IonApp>
+        </LocalizationContext.Provider>
     );
 };
 

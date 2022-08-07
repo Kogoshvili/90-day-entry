@@ -4,6 +4,8 @@ import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 import localization from './utils/i18n';
+import './utils/function';
+import './meta.ts';
 
 window.__ = (value: string): string => {
     const lang = localStorage.getItem('lang') ?? 'en';

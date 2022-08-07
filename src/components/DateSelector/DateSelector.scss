@@ -3,4 +3,14 @@
         --width: fit-content;
         --height: fit-content;
     }
+
+    &.ka {
+        ion-label {
+            font-size: 0.78em;
+        }
+
+        input {
+            font-size: 0.85em;
+        }
+    }
 }

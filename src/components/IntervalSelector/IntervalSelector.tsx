@@ -30,13 +30,13 @@ function IntervalSelector({ onChange, className = '' }: IntervalSelectorProps) {
     return (
         <IonGrid className={`IntervalSelector ${className}`}>
             <IonRow>
-                <IonCol className="IntervalSelector-start">
+                <IonCol size="5" className="IntervalSelector-start">
                     <DateSelector onChange={setStartDate} label={ __('enter date') }/>
                 </IonCol>
-                <IonCol size='2' className="IntervalSelector-badge-wrapper">
+                <IonCol size="2" className="IntervalSelector-badge-wrapper">
                     <IonBadge className="IntervalSelector-badge">{ days ?? '-'}</IonBadge>
                 </IonCol>
-                <IonCol className="IntervalSelector-end">
+                <IonCol size="5" className="IntervalSelector-end">
                     <DateSelector onChange={setEndDate} label={ __('exit date') }/>
                 </IonCol>
             </IonRow>

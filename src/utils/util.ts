@@ -1,4 +1,11 @@
+import { format } from 'date-fns';
 import { Nilable } from '../models/Nil';
+import { enUS, ka } from 'date-fns/locale';
+
+const locales: { [key: string]: Locale } = {
+    'ka': ka,
+    'en': enUS
+};
 
 export function isDate(input: any | any[]): boolean{
     if (input instanceof Array) {
@@ -16,12 +23,6 @@ export function intervalInDays(final: Nilable<Date>, start: Nilable<Date>) {
 
 export function dateToString(date: Nilable<Date>): string {
     if (!date) return '';
-    return date.toLocaleDateString(
-        'en-UK',
-        {
-            day: 'numeric',
-            month: 'short',
-            year: 'numeric'
-        }
-    );
+    const lang = localStorage.getItem('lang') ?? 'en';
+    return format(date, 'dd MMM yyyy', { locale: locales[lang] });
 }
